@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>tinychange&#39;s blog</title>
+  <subtitle>tiny change makes a better world</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2016-05-03T01:22:13.368Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>tinychange</name>
+    <email>meng_wen@126.com</email>
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>first blog</title>
+    <link href="http://yoursite.com/2016/05/03/first-blog/"/>
+    <id>http://yoursite.com/2016/05/03/first-blog/</id>
+    <published>2016-05-03T01:20:59.000Z</published>
+    <updated>2016-05-03T01:22:13.368Z</updated>
+    
+    <content type="html">&lt;p&gt;this is my first blog for test,please wait.&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;this is my first blog for test,please wait.&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
