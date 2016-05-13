@@ -5,22 +5,29 @@
   <meta charset="UTF-8">
   
 	<meta name="baidu-site-verification" content="UqIsxjDh43" />
-    <title>tinychange&#39;s blog</title>
+    <title>volatile关键字解析(转) | tinychange&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="tinychange">
     
 
     
-    <meta name="description" content="tiny change">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tinychange's blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+    <meta name="description" content="volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。说明文字
+然后标记要跳转到什么位置即可：跳转到这里：　　volatile关键字虽然从字面上理解起来比较简单，但是要用好不是一件容易的事情。由于volatile关键字是与Java的内存模型有关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatile关键字解析(转)">
+<meta property="og:url" content="http://yoursite.com/2016/05/13/volatile关键字解析-转/index.html">
 <meta property="og:site_name" content="tinychange's blog">
-<meta property="og:description" content="tiny change">
+<meta property="og:description" content="volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。说明文字
+然后标记要跳转到什么位置即可：跳转到这里：　　volatile关键字虽然从字面上理解起来比较简单，但是要用好不是一件容易的事情。由于volatile关键字是与Java的内存模型有关">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1986284-c3adb2957c173eac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1986284-92904ccaadef858b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-05-13T10:04:28.500Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tinychange's blog">
-<meta name="twitter:description" content="tiny change">
+<meta name="twitter:title" content="volatile关键字解析(转)">
+<meta name="twitter:description" content="volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。说明文字
+然后标记要跳转到什么位置即可：跳转到这里：　　volatile关键字虽然从字面上理解起来比较简单，但是要用好不是一件容易的事情。由于volatile关键字是与Java的内存模型有关">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1986284-c3adb2957c173eac.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
     
     <link rel="alternative" href="/atom.xml" title="tinychange&#39;s blog" type="application/atom+xml">
@@ -73,12 +80,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2016/05/13/volatile关键字解析-转/" title="volatile关键字解析(转)" itemprop="url">volatile关键字解析(转)</a>
@@ -92,9 +97,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <p>volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。<br><a href="#jump">说明文字</a></p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#block1"><span class="toc-number">1.</span> <span class="toc-text">一.内存模型的相关概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block2"><span class="toc-number">2.</span> <span class="toc-text">二.并发编程中的三个概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block3"><span class="toc-number">3.</span> <span class="toc-text">三.Java内存模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block4"><span class="toc-number">4.</span> <span class="toc-text">四.深入剖析volatile关键字</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block5"><span class="toc-number">5.</span> <span class="toc-text">五.使用volatile关键字的场景</span></a></li></ol>
+		
+		</div>
+		
+		<p>volatile这个关键字可能很多朋友都听说过，或许也都用过。在Java 5之前，它是一个备受争议的关键字，因为在程序中使用它往往会导致出人意料的结果。在Java 5之后，volatile关键字才得以重获生机。<br><a href="#jump">说明文字</a></p>
 <p>然后标记要跳转到什么位置即可：<br><span id="jump">跳转到这里：</span><br>　　volatile关键字虽然从字面上理解起来比较简单，但是要用好不是一件容易的事情。由于volatile关键字是与Java的内存模型有关的，因此在讲述volatile关键之前，我们先来了解一下与内存模型相关的概念和知识，然后分析了volatile关键字的实现原理，最后给出了几个使用volatile关键字的场景。</p>
 <blockquote>
 <p>以下是本文的目录大纲：</p>
@@ -137,14 +149,9 @@
 <p>至于为何需要这么写请参考：<br>　　《Java 中的双重检查（Double-Check）》<a href="http://blog.csdn.net/dl88250/article/details/5439024" target="_blank" rel="external">http://blog.csdn.net/dl88250/article/details/5439024</a><br>　　和<a href="http://www.iteye.com/topic/652440" target="_blank" rel="external">http://www.iteye.com/topic/652440</a><br>　　参考资料：<br>　　《Java编程思想》<br>　　《深入理解Java虚拟机》<br>　　<a href="http://jiangzhengjun.iteye.com/blog/652532" target="_blank" rel="external">http://jiangzhengjun.iteye.com/blog/652532</a><br>　　<a href="http://blog.sina.com.cn/s/blog_7bee8dd50101fu8n.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_7bee8dd50101fu8n.html</a><br>　　<a href="http://ifeve.com/volatile/" target="_blank" rel="external">http://ifeve.com/volatile/</a><br>　　<a href="http://blog.csdn.net/ccit0519/article/details/11241403" target="_blank" rel="external">http://blog.csdn.net/ccit0519/article/details/11241403</a><br>　　<a href="http://blog.csdn.net/ns_code/article/details/17101369" target="_blank" rel="external">http://blog.csdn.net/ns_code/article/details/17101369</a><br>　　<a href="http://www.cnblogs.com/kevinwu/archive/2012/05/02/2479464.html" target="_blank" rel="external">http://www.cnblogs.com/kevinwu/archive/2012/05/02/2479464.html</a><br>　　<a href="http://www.cppblog.com/elva/archive/2011/01/21/139019.html" target="_blank" rel="external">http://www.cppblog.com/elva/archive/2011/01/21/139019.html</a><br>　　<a href="http://ifeve.com/volatile-array-visiblity/" target="_blank" rel="external">http://ifeve.com/volatile-array-visiblity/</a><br>　　<a href="http://www.bdqn.cn/news/201312/12579.shtml" target="_blank" rel="external">http://www.bdqn.cn/news/201312/12579.shtml</a><br>　　<a href="http://exploer.blog.51cto.com/7123589/1193399" target="_blank" rel="external">http://exploer.blog.51cto.com/7123589/1193399</a><br>　　<a href="http://www.cnblogs.com/Mainz/p/3556430.html" target="_blank" rel="external">http://www.cnblogs.com/Mainz/p/3556430.html</a></p>
 <p>作者：<a href="http://www.cnblogs.com/dolphin0520/" target="_blank" rel="external">海子</a><br>出处：<a href="http://www.cnblogs.com/dolphin0520/" target="_blank" rel="external">http://www.cnblogs.com/dolphin0520/</a></p>
 <p>本博客中未标明转载的文章归作者<a href="http://www.cnblogs.com/dolphin0520/" target="_blank" rel="external">海子</a>和博客园共有，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文连接，否则保留追究法律责任的权利。</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 <div class="article-categories">
@@ -162,330 +169,47 @@
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-	  	<span></span>
-		<a href="/2016/05/13/volatile关键字解析-转/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/13/volatile关键字解析-转/" data-count-type="comments">&nbsp</a>
-
+	  <div data-url="http://yoursite.com/2016/05/13/volatile关键字解析-转/" data-title="volatile关键字解析(转) | tinychange&#39;s blog" data-tsina="1923814243" class="share clearfix">
+	  </div>
 	
-</div>
+	</div>
 
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"tinychange"};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
 
 </footer>
 
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
 
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/05/05/test2/" title="test2" itemprop="url">test2</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="tinychange" target="_blank" itemprop="author">tinychange</a>
-		
-  <p class="article-time">
-    <time datetime="2016-05-05T03:01:38.000Z" itemprop="datePublished"> 发表于 2016-05-05</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>I’m a test </p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
+<div class="next">
+<a href="/2016/05/05/test2/"  title="test2">
+ <strong>下一篇：</strong><br/> 
+ <span>test2
+</span>
+</a>
 </div>
 
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/05/05/test2/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/05/test2/" data-count-type="comments">&nbsp</a>
+</nav>
 
 	
-</div>
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2016/05/13/volatile关键字解析-转/" data-title="volatile关键字解析(转)" data-url="http://yoursite.com/2016/05/13/volatile关键字解析-转/"></div>
+</section>
 
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"tinychange"};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
 
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/05/04/start-learn/" title="start learn" itemprop="url">start learn</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="tinychange" target="_blank" itemprop="author">tinychange</a>
-		
-  <p class="article-time">
-    <time datetime="2016-05-04T01:21:47.000Z" itemprop="datePublished"> 发表于 2016-05-04</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="最近的计划（2016-5-4-–-2016年底）"><a href="#最近的计划（2016-5-4-–-2016年底）" class="headerlink" title="最近的计划（2016-5-4 – 2016年底）"></a>最近的计划（2016-5-4 – 2016年底）</h2><pre><code>最近工作比较清闲，所以决定开始学习下android平台的开发，接下来会不定期的对学习过程中遇到的问题
-
-进行一些总结，一是可以当作学习笔记供自己复习，二来也分享给广大的android 爱好者，笔者也是小白一
-
-名，掌握一些java基础还有一些常用的框架，相信和我一样处于这个时期的人还是蛮多的，借这个平台也希
-
-望大家共同分享，共同进步！（问题总结会发到另外的文章中，本文用于记录每天计划供自己观看）
-</code></pre><h4 id="计划（记录每天所学）"><a href="#计划（记录每天所学）" class="headerlink" title="计划（记录每天所学）"></a>计划（记录每天所学）</h4><p>开始这段时间的重点应该都会放在极客学院的 an’droid 视频教程上，有个职业路径图，选择android工程师后会显示学习<br>android 的一个学习体系，由简到难，是我能找到的最适合初学者学习的资料了，不过视频难免有所疏漏，有些<br>知识点一笔带过，对初学者来说还是需要再翻一下其他的资料来读。</p>
-<p>视频学习大概大概分为这几个阶段（109课程519个视频课时 90小时合计课程时长）</p>
-<p>#####附学习进度</p>
-<p>初级Android开发工程师 31课程 15小时26分</p>
-<pre><code>--Java基础  100%
-
---Android环境搭建 100%
-
---Android基础知识  100% 
-</code></pre><p>中级Android开发工程师 28课程 38小时6分</p>
-<pre><code>--用户界面    learning...
-
---系统功能
-
---数据存储
-</code></pre><p>高级Android开发工程师 50课程 35小时47分 </p>
-<pre><code>--网络与通信
-
---混合编程 
-
---Android开源库
-
---Bmob后端云系列课程
-
---Android测试
-
---项目实战
-</code></pre><p>面试指导    </p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/plan/">plan</a>
-</div>
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/tags/android/">android</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/05/04/start-learn/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/04/start-learn/" data-count-type="comments">&nbsp</a>
-
-	
-</div>
-
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"tinychange"};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2016/05/03/first-blog/" title="first blog" itemprop="url">first blog</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="tinychange" target="_blank" itemprop="author">tinychange</a>
-		
-  <p class="article-time">
-    <time datetime="2016-05-03T01:20:59.000Z" itemprop="datePublished"> 发表于 2016-05-03</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <p>this is my first blog for test,please wait.</p>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-	  	<span></span>
-		<a href="/2016/05/03/first-blog/#comments" class="ds-thread-count comments-count-link" data-thread-key="2016/05/03/first-blog/" data-count-type="comments">&nbsp</a>
-
-	
-</div>
-
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"tinychange"};
-(function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#block1"><span class="toc-number">1.</span> <span class="toc-text">一.内存模型的相关概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block2"><span class="toc-number">2.</span> <span class="toc-text">二.并发编程中的三个概念</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block3"><span class="toc-number">3.</span> <span class="toc-text">三.Java内存模型</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block4"><span class="toc-number">4.</span> <span class="toc-text">四.深入剖析volatile关键字</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#block5"><span class="toc-number">5.</span> <span class="toc-text">五.使用volatile关键字的场景</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -671,14 +395,103 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
 
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"tinychange"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
 
 
 
@@ -747,4 +560,4 @@ var _hmt = _hmt || [];
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
